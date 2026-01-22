@@ -13,7 +13,7 @@ const projectsData = [
   {
     id: 1,
     name: "City Management System",
-    category: "fullstack",
+    category: ["backend", "frontend"],
     position: [-0.4, -0.9, 1],
     color: "#ff9900",
     description:
@@ -32,7 +32,7 @@ const projectsData = [
   {
     id: 2,
     name: "E-Commerce System",
-    category: "fullstack",
+    category: "backend",
     position: [1.6, -1.5, 1],
     color: "#ff00ff",
     description:
@@ -55,7 +55,7 @@ const projectsData = [
   {
     id: 3,
     name: "Stavya Spine Hospital ERP",
-    category: "fullstack",
+    category: ["frontend", "backend"],
     position: [2, 2, 1],
     color: "#bbd11a",
     description:
@@ -97,7 +97,7 @@ const projectsData = [
   {
     id: 5,
     name: "METIS Hospital Management System",
-    category: "fullstack",
+    category: "backend",
     position: [-0.6, 1,1],
     color: "#00b894",
     description:
@@ -119,7 +119,7 @@ const projectsData = [
   {
     id: 6,
     name: "2Brain – Business Operations System",
-    category: "fullstack",
+    category: "backend",
     position: [-1, 2.6, 1],
     color: "#df123b",
     description:
@@ -143,7 +143,7 @@ const projectsData = [
   {
     id: 7,
     name: "Biomatrix – WordPress Content & Form Platform",
-    category: "fullstack",
+    category: "wordpress",
     position: [-5, 2, 1],
     color: "#f6d015",
     description:
@@ -166,7 +166,7 @@ const projectsData = [
   {
     id: 8,
     name: "Soham Hospital Management & Billing System",
-    category: "fullstack",
+    category: "wordpress",
     position: [-3.5, -0.4, 1],
     color: "#00cec9",
     description:
@@ -190,7 +190,7 @@ const projectsData = [
   {
     id: 9,
     name: "Culture Crust – Restaurant & Online Ordering Management System",
-    category: "fullstack",
+    category: "backend",
     position: [-3.0, -2, 1],
     color: "#f566b7",
     description:
@@ -211,8 +211,6 @@ const projectsData = [
     // demo: "https://your-demo-link.com",
     // image: "/projects/culture-crust.png",
   }
-
-
 ]
 
 function ProjectPlanet({ project, onClick, isSelected }: any) {
@@ -298,9 +296,16 @@ export default function ProjectGalaxy({ selectedFilter }: ProjectGalaxyProps) {
   const [webglSupported, setWebglSupported] = useState(true)
   const [canvasError, setCanvasError] = useState(false)
 
-  const filteredProjects = projectsData.filter(
-    (project) => selectedFilter === "all" || project.category === selectedFilter,
-  )
+  const filteredProjects = projectsData.filter((project) => {
+    if (selectedFilter === "all") return true
+
+    // Normalize category to array (handles string + array)
+    const categories = Array.isArray(project.category)
+      ? project.category
+      : project.category.split(",").map(c => c.trim())
+
+    return categories.includes(selectedFilter)
+  });
 
   useEffect(() => {
     // Check WebGL support

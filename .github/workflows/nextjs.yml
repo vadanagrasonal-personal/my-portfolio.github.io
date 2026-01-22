@@ -27,16 +27,15 @@ jobs:
         with:
           node-version: "20"
 
-      # ✅ FIX: Avoid dependency conflict error
+      # ✅ Fix dependency conflict
       - name: Install dependencies
         run: npm install --legacy-peer-deps
 
+      # ✅ Next.js will auto-export because output: "export" is enabled
       - name: Build project
         run: npm run build
 
-      - name: Export static site
-        run: npx next export
-
+      # ✅ Upload static site
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
